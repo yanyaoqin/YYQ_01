@@ -1,0 +1,123 @@
+#include<stdio.h>
+#include<malloc.h>
+struct Arr{
+	int *Base;
+	int len;
+	int count;
+};
+void init_arr(struct Arr *array,int length);
+bool appead_arr(struct Arr *array,int value);
+bool insert_arr(struct Arr *array,int pos,int value);
+bool delete_arr(struct Arr *array,int pos,int *value);
+int get(); 
+bool is_empty(struct Arr *array);
+bool is_full(struct Arr *array);
+void convert(struct Arr *array);
+void sort_arr(struct Arr *array);
+void show_arr(struct Arr *array);
+
+int main(void){
+	int value;
+	struct Arr arr;
+	init_arr(&arr,8);
+	show_arr(&arr);
+	appead_arr(&arr,6);
+	appead_arr(&arr,5);
+	appead_arr(&arr,3);
+	appead_arr(&arr,1);
+	show_arr(&arr);
+	/*insert_arr(&arr,6 ,100);
+	show_arr(&arr);
+	if(delete_arr(&arr,1,&value)){
+		printf("delete is suse");
+		printf("%d",value);
+	}
+	
+	show_arr(&arr);*/
+	convert(&arr);
+	show_arr(&arr);
+
+	return 0;
+
+}
+void init_arr(struct Arr *array,int len){
+	array->Base=(int *)malloc(sizeof(int)*len);
+	if(NULL==array->Base)
+		printf("create failure!");
+	else{
+		array->len=len;
+		array->count=0;
+	}
+	return;   
+}
+bool is_empty(struct Arr *array){
+	if(array->count==0)
+		return true;
+	else
+		return false;
+
+}
+void show_arr(struct Arr *array){
+	if(is_empty(array))
+		printf("there is nothing");
+	else{
+		for(int i=0;i<array->count;i++)
+			printf("%d ",array->Base[i]);
+		printf("\n");
+	}
+}
+bool is_full(struct Arr *array){
+	if(array->count==array->len)
+		return true;
+	else
+		return false;
+
+}
+bool appead_arr(struct Arr *array,int value){
+	if(is_full(array))
+		return false; 
+	
+	array->Base[array->count]=value;
+	array->count++;
+	return true;
+	
+}
+bool insert_arr(struct Arr *array,int pos,int value){
+	if(is_full(array))
+		return false;
+	if(pos<0||pos>array->count+1)
+		return false;
+	for(int i=array->count-1;i>=pos-1;--i)
+		array->Base[i+1]=array->Base[i];
+	array->Base[pos-1]=value;
+	array->count++;
+	return true;
+
+	
+}
+bool delete_arr(struct Arr *array,int pos,int *value){
+	if(is_full(array))
+		return false;
+	if(pos<0||pos>array->count)
+		return false;
+	*value=array->Base[pos-1];
+	for(int i=pos;i<array->count;++i)
+		array->Base[i-1]=array->Base[i];
+	array->count--;
+	return true;
+
+}
+void convert(struct Arr *array){
+	int i=0;
+	int j=array->count-1;
+	while(i<j){
+		int t=array->Base[i];
+		array->Base[i]=array->Base[j];
+		array->Base[j]=t;
+		i++;
+		j--;
+	}
+	return;
+}
+void sort_arr(struct Arr *array){
+}
